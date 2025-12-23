@@ -1,0 +1,9 @@
+Conversion Warnings Log
+
+
+MSG_ID: 1110 	MSG_TYPE: S 	MSG_NAME: HAVC
+	SIG_NAME: TMEP_INSIDE, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+
+MSG_ID: 1109 	MSG_TYPE: S 	MSG_NAME: SYS_INFOR
+	SIG_NAME: TEMP_ENVIROMENT, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: TEMP_ENGINE, STATUS: Invalid Max or Min value., ACTION: Value Set to default

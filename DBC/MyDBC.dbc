@@ -1,0 +1,81 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: DISPLAY GEAR INDICATOR SYSTEM
+
+
+BO_ 1110 HAVC: 5 SYSTEM
+ SG_ TMEP_INSIDE : 17|10@0- (0.1,-5) [-5|52.1] "degree c"  DISPLAY
+ SG_ AUTO_SIGNAL : 0|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ VOLUME_LEVEL : 7|7@0+ (1,0) [0|100] "%"  DISPLAY
+ SG_ HAVC_PASSENGER : 8|6@0+ (1,0) [0|50] "degree c"  DISPLAY
+ SG_ HAVC_DRIVER : 15|6@0+ (1,0) [0|50] "degree c"  DISPLAY
+ SG_ CHECKSUM : 34|3@0+ (1,0) [0|3] ""  DISPLAY
+
+BO_ 1109 SYS_INFOR: 8 SYSTEM
+ SG_ TEMP_ENVIROMENT : 54|11@0- (0.1,-40) [-40|102.3] ""  DISPLAY
+ SG_ CHECK_ENGINE : 16|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ RPM_ENGINE : 32|16@1+ (1,0) [0|65535] "rpm"  DISPLAY
+ SG_ CAR_SPEED : 24|8@1+ (1,0) [0|255] "kph"  DISPLAY
+ SG_ LOCK : 18|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ TEMP_ENGINE : 15|13@0- (0.1,-10) [-10|409.5] "degree c"  DISPLAY
+ SG_ FUEL_LEVEL : 7|7@0+ (1,0) [0|100] "%"  DISPLAY
+ SG_ CHECKSUM : 58|3@0+ (1,0) [0|3] ""  DISPLAY
+
+BO_ 1108 GEARBOX_INFOR: 6 GEAR
+ SG_ GEAR_D : 15|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ GEAR_N : 2|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ GEAR_R : 21|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ GEAR_P : 27|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ CHECKSUM : 34|5@0+ (1,0) [0|15] ""  DISPLAY
+
+BO_ 1092 INDICATOR_BLOCK: 5 INDICATOR
+ SG_ FOG_LIGHT : 19|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ HAZARD : 13|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ LOW_BEAM : 25|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ HIGHT_BEAM : 4|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ TURN_RIGHT : 0|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ TURN_LEFT : 7|1@0+ (1,0) [0|1] ""  DISPLAY
+ SG_ CHECKSUM : 34|3@0+ (1,0) [0|3] ""  DISPLAY
+
+
+
+CM_ BU_ INDICATOR "Containt: turn signal, light signal, hazal signal";
+CM_ BU_ SYSTEM "Containt: fuel level, temperature engin, temp enviroment, lock- unpock car door, check engine inditator";
+BA_DEF_  "MultiplexExtEnabled" ENUM  "No","Yes";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "MultiplexExtEnabled" "No";
+BA_DEF_DEF_  "BusType" "";
+
