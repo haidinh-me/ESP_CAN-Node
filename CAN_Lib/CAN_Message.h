@@ -44,7 +44,7 @@ public:
 
     int inline getDLC() const { return DLC; }
 
-    std::vector<CanSignal*> inline getSIGNAL() const {return SIGNAL;}
+    std::vector<CanSignal*> inline getSIGNAL() const {return SIGNAL;}//new update
     
     void setSignal(uint8_t *buff, CanSignal &sig, double value);
 
