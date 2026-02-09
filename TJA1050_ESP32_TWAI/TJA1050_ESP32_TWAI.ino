@@ -2,12 +2,13 @@
 #include <CAN.h>
 #include "CAN_Message.h"
 
-#define TX_GPIO_NUM   27  // Connects to CTX
-#define RX_GPIO_NUM   26  // Connects to CRX
+#define TX_GPIO_NUM   26  // Connects to CTX
+#define RX_GPIO_NUM   27  // Connects to CRX
 
 //==================================================================================//
 char msgString[128];
 uint8_t buff[8]{};
+uint8_t buffer[8]{};
 uint8_t store[8]{};
 //==================================================================================//
 
@@ -118,6 +119,14 @@ void setup() {
   sysInforMsg->setSignal(buff, *fuel_level, 78.0);
   sysInforMsg->setSignal(buff, *checksum_sysinfor, 2.0);
 
+  indicatorMsg->setSignal(buffer , *fog_light, 1.0);
+  indicatorMsg->setSignal(buffer , *hazard, 1.0);
+  indicatorMsg->setSignal(buffer , *low_beam, 1.0);
+  indicatorMsg->setSignal(buffer , *hight_beam, 1.0);
+  indicatorMsg->setSignal(buffer , *turn_right, 1.0);
+  indicatorMsg->setSignal(buffer , *turn_left, 1.0);
+  indicatorMsg->setSignal(buffer , *checksum_indicator, 3.0);
+
 }
 //==================================================================================//
 void canReceiver() {
@@ -173,7 +182,6 @@ void canSender(uint8_t *buff, CAN_Message *msg) {
   }
   CAN.endPacket();
   Serial.println ("done");
-  delay (500);
 
   /*// send extended packet: id is 29 bits, packet can contain up to 8 bytes of data
   Serial.print("Sending extended packet ... ");
@@ -191,7 +199,10 @@ void canSender(uint8_t *buff, CAN_Message *msg) {
 
 //==================================================================================//
 void loop() {
-  //canSender(buff, sysInforMsg);
-  canReceiver();
+  canSender(buff, sysInforMsg);
+  delay(500);
+  canSender(buffer, indicatorMsg);
+  delay(500);
+  //canReceiver();
 }
 //==================================================================================//

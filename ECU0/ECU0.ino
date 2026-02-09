@@ -6,13 +6,16 @@
 #include <CAN_Message.h>
 #include <CAN.h>
 
+#define TX_GPIO_NUM   26  // Connects to CTX
+#define RX_GPIO_NUM   27  // Connects to CRX
+
 #define FOG_LIGHT   15
 #define HAZARD      14
 #define LOW_BEAM    17
 #define HIGHT_BEAM  16
 #define TURN_RIGHT  12
 #define TURN_LEFT   13
-#define HEAD        5
+#define FLASH        5
 
 //====================================================================================================================================//
 CanSignal fog_light("FOG_LIGHT",                   19, 1, Endianness::Motorola, false, 1.0, 0.0, 0.0, 1.0);
@@ -69,7 +72,7 @@ void inputTask(void *parameter) {
     vTaskDelay(pdMS_TO_TICKS(20));
 
     bool val_fog   = !digitalRead(FOG_LIGHT);
-    bool val_head  = !digitalRead(HEAD);
+    bool val_head  = !digitalRead(FLASH);
     bool val_low   = !digitalRead(LOW_BEAM);
     bool val_high  = !digitalRead(HIGHT_BEAM);
     bool val_right = !digitalRead(TURN_RIGHT);
@@ -93,6 +96,7 @@ void inputTask(void *parameter) {
       
       xQueueSend(signalQueue, buff, 0);
       Serial.println("Signal Changed -> Queued");
+      canSender(buff, &indicatorMsg);
     }
   }
 }
@@ -109,8 +113,18 @@ void commsTask(void *parameter) {
 void setup() {
   Serial.begin(115200);
 
+  CAN.setPins (RX_GPIO_NUM, TX_GPIO_NUM);
+  // start the CAN bus at 500 kbps
+  if (!CAN.begin (500E3)) {
+    Serial.println ("Starting CAN failed!");
+    while (1);
+  }
+  else {
+    Serial.println ("CAN Initialized");
+  }
+
   pinMode(FOG_LIGHT, INPUT_PULLUP);
-  pinMode(HAZARD, INPUT_PULLUP);
+  pinMode(FLASH, INPUT_PULLUP);
   pinMode(LOW_BEAM, INPUT_PULLUP);
   pinMode(HIGHT_BEAM, INPUT_PULLUP);
   pinMode(TURN_RIGHT, INPUT_PULLUP);
@@ -118,7 +132,7 @@ void setup() {
 
 
   attachInterrupt(digitalPinToInterrupt(FOG_LIGHT), onSwitchChange, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(HAZARD), onSwitchChange, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(FLASH), onSwitchChange, CHANGE);
   attachInterrupt(digitalPinToInterrupt(LOW_BEAM), onSwitchChange, CHANGE);
   attachInterrupt(digitalPinToInterrupt(HIGHT_BEAM), onSwitchChange, CHANGE);
   attachInterrupt(digitalPinToInterrupt(TURN_RIGHT), onSwitchChange, CHANGE);
@@ -133,4 +147,16 @@ void setup() {
 
 void loop() {
   vTaskDelete(NULL);
+}
+
+void canSender(uint8_t *buff, CAN_Message *msg) {
+  // send packet: id is 11 bits, packet can contain up to 8 bytes of data
+  Serial.print ("Sending packet ... ");
+
+  CAN.beginPacket (msg->getID());
+  for(uint8_t i=0; i<8; i++){
+    CAN.write(buff[i]);
+  }
+  CAN.endPacket();
+  Serial.println ("done");
 }
